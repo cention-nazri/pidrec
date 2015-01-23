@@ -7,9 +7,24 @@ import (
 	"os"
 )
 
+type PidFile struct {
+	path string
+}
+
+// Remove deletes the file held by the PidFile.
+func (fr *PidFile) Remove() {
+	if len(fr.path) == 0 {
+		return
+	}
+	err := os.Remove(fr.path)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 // MustWriteTo writes the pid of the calling process to the given file.
 // It panic on any error or if the file already exists.
-func MustWriteTo(pidFile string) {
+func MustWriteTo(pidFile string) *PidFile {
 	if len(pidFile) == 0 {
 		log.Fatal("Error: Filename is empty")
 	}
@@ -26,4 +41,5 @@ func MustWriteTo(pidFile string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	return &PidFile{pidFile}
 }
