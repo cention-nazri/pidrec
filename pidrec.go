@@ -13,6 +13,9 @@ type PidFile struct {
 
 // Remove deletes the file held by the PidFile.
 func (fr *PidFile) Remove() {
+	if fr == nil {
+		return
+	}
 	if len(fr.path) == 0 {
 		return
 	}
