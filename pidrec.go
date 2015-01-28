@@ -12,14 +12,14 @@ type PidFile struct {
 }
 
 // Remove deletes the file held by the PidFile.
-func (fr *PidFile) Remove() {
-	if fr == nil {
+func (pf *PidFile) Remove() {
+	if pf == nil {
 		return
 	}
-	if len(fr.path) == 0 {
+	if len(pf.path) == 0 {
 		return
 	}
-	err := os.Remove(fr.path)
+	err := os.Remove(pf.path)
 	if err != nil {
 		log.Fatal(err)
 	}
