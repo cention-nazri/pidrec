@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -61,24 +60,24 @@ func getPid(file string) (int, error) {
 }
 
 // MustWriteTo writes the pid of the calling process to the given file.
-// It panic on any error or if the file already exists.
+// It panics on any error or if the file already exists.
 func MustWriteTo(pidFile string) *PidFile {
 	if len(pidFile) == 0 {
-		log.Fatal("Error: Filename is empty")
+		panic("empty filename")
 	}
 	fi, err := os.Stat(pidFile)
 	if err != nil {
 		if err.(*os.PathError).Err.Error() != "no such file or directory" {
-			log.Fatal(err)
+			panic(err)
 		}
 	} else if fi != nil {
-		log.Fatal("Pidfile already exist. Is another instance running?: ", pidFile)
+		panic(fmt.Sprintf("%s already exist, is another instance running?", pidFile))
 	}
 
 	pid := os.Getpid()
 	err = ioutil.WriteFile(pidFile, []byte(fmt.Sprintf("%d\n", pid)), 0644)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	return &PidFile{
 		path: pidFile,
