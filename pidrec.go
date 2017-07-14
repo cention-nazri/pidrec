@@ -9,6 +9,7 @@ import (
 	"strings"
 )
 
+// PidFile represents a file that contains a process id.
 type PidFile struct {
 	path string
 	pid  int
